@@ -12,19 +12,19 @@ jobs:
       - name: Login to DockerHub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
       - name: Build Docker image
-        run: docker build -t myagmarsurenmike/mern-app .
+        run: docker build -t tamiraa468/proshop-back.
       - name: Publish Docker image
-        run: docker push myagmarsurenmike/mern-app:latest    
+        run: docker push tamiraa468/proshop-back:latest    
   deploy:
     needs: build
     runs-on: self-hosted
     steps:
       - name: Pull image from DockerHub
-        run: docker pull myagmarsurenmike/mern-app:latest
+        run: docker pull tamiraa468/proshop-back:latest
       - name: Stop existing container
-        run: docker stop mern-app || true # Continue if container doesn't exist
+        run: docker stop tamiraa468/proshop-back || true # Continue if container doesn't exist
       - name: Remove existing container
-        run: docker rm mern-app || true # Continue if container doesn't exist
+        run: docker rm tamiraa468/proshop-back || true # Continue if container doesn't exist
       - name: Run Docker container
-        run: docker run -d -p 8000:8000 --name mern-app -e MONGO_PASSWORD='${{secrets.MONGO_PASSWORD}}' myagmarsurenmike/mern-app
+        run: docker run -d -p 8000:8000 --name tamiraa468/proshop-back -e MONGO_PASSWORD='${{secrets.MONGO_PASSWORD}}' tamiraa468/proshop-back
 
