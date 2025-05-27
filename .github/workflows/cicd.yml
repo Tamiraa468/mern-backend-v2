@@ -1,30 +1,40 @@
 name: Deploy node app to production
+
 on:
   push:
     branches:
       - main
+
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout source 
+      - name: Checkout source
         uses: actions/checkout@v4
+
       - name: Login to DockerHub
         run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+
       - name: Build Docker image
-        run: docker build -t tamiraa468/proshop-back.
-      - name: Publish Docker image
-        run: docker push tamiraa468/proshop-back:latest    
+        run: docker build -t tamiraa468/proshop-back:latest .
+
+      - name: Push Docker image
+        run: docker push tamiraa468/proshop-back:latest
+
   deploy:
     needs: build
     runs-on: self-hosted
+
     steps:
       - name: Pull image from DockerHub
         run: docker pull tamiraa468/proshop-back:latest
-      - name: Stop existing container
-        run: docker stop tamiraa468/proshop-back || true # Continue if container doesn't exist
-      - name: Remove existing container
-        run: docker rm tamiraa468/proshop-back || true # Continue if container doesn't exist
-      - name: Run Docker container
-        run: docker run -d -p 8000:8000 --name tamiraa468/proshop-back -e MONGO_PASSWORD='${{secrets.MONGO_PASSWORD}}' tamiraa468/proshop-back
 
+      - name: Stop existing container (if any)
+        run: docker stop proshop-back || true
+
+      - name: Remove existing container (if any)
+        run: docker rm proshop-back || true
+
+      - name: Run new container
+        run: docker run -d -p 8000:8000 --name proshop-back -e MONGO_PASSWORD=${{ secrets.MONGO_PASSWORD }} tamiraa468/proshop-back:latest
