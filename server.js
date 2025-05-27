@@ -19,7 +19,7 @@ const app = express();
 
 app.use(
   cors({
-    origin: 'http://51.21.1.50:3000',
+    origin: 'http://13.53.207.163:3000/',
     credentials: true, // Allow cookies & authentication headers
     methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed HTTP methods
     allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers
